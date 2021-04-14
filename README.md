@@ -1,5 +1,4 @@
-# diabetes_medicine_cost_targets
-Expanding access to newer glycemic control medicines among people with diabetes mellitus in low- and middle-income countries
+# Expanding access to newer glycemic control medicines among people with diabetes mellitus in low- and middle-income countries
 
 Importance: As diabetes mellitus increases in prevalence among low- and middle-income countries, the cost at which the clinical benefit of newer glycemic therapies will meet international criteria for cost-effectiveness remains unclear.
 
