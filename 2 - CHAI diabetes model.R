@@ -101,9 +101,10 @@ D_amp = mean(c(0.09))
 D_gid = mean(c(0.07))
 b = 0.04
 
-iters = 10000
+iters = 1
+iter = 1
 
-for (iter in 1:iters) {
+# for (iter in 1:iters) {
   print(paste("On iteration", iter))
   
   
@@ -224,13 +225,13 @@ for (iter in 1:iters) {
   
   dxdf$YLL_genit = ((K*C*(exp(r*dxdf$a)))/((r+b)^2))*(((exp(-(r+b)*(dxdf$L+dxdf$a)))*(-(r+b)*(dxdf$L+dxdf$a)-1))-
                                                         (exp(-(r+b)*dxdf$a))*(-(r+b)*dxdf$a-1))+(((1-K)/r)*(1-exp(-r*dxdf$L)))
-  dxdf$YLD_genit = D_genit*(7/365) # 7 day disability duration
+  dxdf$YLD_genit = D_genit*(5/365) # 5 day disability duration
   dxdf$DALYS_genit_base = (dxdf$genitdeaths_base*dxdf$YLL_genit+dxdf$genitevents_base*dxdf$YLD_genit)/(1.03^10)
   
   
   dxdf$YLL_dka = ((K*C*(exp(r*dxdf$a)))/((r+b)^2))*(((exp(-(r+b)*(dxdf$L+dxdf$a)))*(-(r+b)*(dxdf$L+dxdf$a)-1))-
                                                       (exp(-(r+b)*dxdf$a))*(-(r+b)*dxdf$a-1))+(((1-K)/r)*(1-exp(-r*dxdf$L)))
-  dxdf$YLD_dka = D_dka*(7/365) # 7 day disability duration
+  dxdf$YLD_dka = D_dka*(5/365) # 5 day disability duration
   dxdf$DALYS_dka_base = (dxdf$dkadeaths_base*dxdf$YLL_dka+dxdf$dkaevents_base*dxdf$YLD_dka)/(1.03^10)
   
   dxdf$YLL_amp = ((K*C*(exp(r*dxdf$a)))/((r+b)^2))*(((exp(-(r+b)*(dxdf$L+dxdf$a)))*(-(r+b)*(dxdf$L+dxdf$a)-1))-
@@ -243,7 +244,7 @@ for (iter in 1:iters) {
   
   dxdf$YLL_gid = ((K*C*(exp(r*dxdf$a)))/((r+b)^2))*(((exp(-(r+b)*(dxdf$L+dxdf$a)))*(-(r+b)*(dxdf$L+dxdf$a)-1))-
                                                       (exp(-(r+b)*dxdf$a))*(-(r+b)*dxdf$a-1))+(((1-K)/r)*(1-exp(-r*dxdf$L)))
-  dxdf$YLD_gid = D_gid*(7/365) # 7 day disability duration
+  dxdf$YLD_gid = D_gid*(5/365)*0.11 + D_gid  # 5 day disability duration for the 11% with GI distress + perpetual for those with injection
   dxdf$DALYS_gid_base = (dxdf$giddeaths_base*dxdf$YLL_gid+dxdf$gidevents_base*dxdf$YLD_gid)/(1.03^10)
   
   
@@ -407,7 +408,8 @@ for (iter in 1:iters) {
 
   dxdf$statin = as.numeric(dxdf$statin)-1
   
-for (i  in 1:8) {
+  i=7
+#for (i  in 1:8) {
 
     #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1, all
     
@@ -447,15 +449,18 @@ for (i  in 1:8) {
       dxdf$onsulfa = (dxdf$oralrx==1)*rbinom(dxdf$oralrx,1,0.5)
       
       set.seed(iter)
+      dxdf$hocvd = rbinom(dxdf$cvdrisk, 1, dxdf$cvdrisk/100)
+      dxdf$hocvd[dxdf$mi==1] = 1
+      set.seed(iter)
       dxdf$hockd = rbinom(dxdf$nephrisk,1,dxdf$nephrisk/100)
       set.seed(iter)
       dxdf$hohypog = rbinom(dxdf$hypogrisk,1,dxdf$hypogrisk/100)
       set.seed(iter)
       dxdf$hochf = rbinom(dxdf$chfrisk,1,dxdf$chfrisk/100)
       
-      dxdf$altmed = (dxdf$cvdhx==1)| (dxdf$hockd==1)| (dxdf$hohypog==1)| (dxdf$hochf==1)
+      dxdf$altmed = ((dxdf$cvdhx==1)| (dxdf$hockd==1)| (dxdf$hohypog==1)| (dxdf$hochf==1))&(dxdf$onsulfa==1)
       dxdf$lowegfr = rbinom(length(dxdf$altmed),1,.04182)
-      dxdf$altmedsglt = (((dxdf$cvdhx==1)| (dxdf$hockd==1)| (dxdf$hohypog==1)| (dxdf$hochf==1))&(dxdf$lowegfr==0))
+      dxdf$altmedsglt = ((((dxdf$cvdhx==1)| (dxdf$hockd==1)| (dxdf$hohypog==1)| (dxdf$hochf==1))&(dxdf$lowegfr==0)))&(dxdf$onsulfa==1)
       dxdf$altmed = (i==2)*(dxdf$altmedsglt)+(i!=2)*(dxdf$altmed)
       dxdf$classeff = (dxdf$altmed==0)*0.57+(dxdf$altmed==1)*(ifelse(i==1,0.57,ifelse(i==2,0.51,ifelse(i==3,0.80,ifelse(i==4,0.53,ifelse(i==5,0.60,ifelse(i==6,0.57,ifelse(i==7,0.53,0.53))))))))  #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1
       
@@ -537,7 +542,7 @@ for (i  in 1:8) {
       
       # absolute increase in events
       dxdf$gidrisk_opt = dxdf$gidrisk
-      dxdf$gidrisk_rr = (dxdf$altmed==0)*0+(dxdf$altmed==1)*ifelse(i==1,0,ifelse(i==2,0,ifelse(i==3,11,ifelse(i==4,0,ifelse(i==5,0,ifelse(i==6,0,ifelse(i==7,0.66,0.66)))))))  #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1
+      dxdf$gidrisk_rr = (dxdf$altmed==0)*0+(dxdf$altmed==1)*ifelse(i==1,0,ifelse(i==2,0,ifelse(i==3,100,ifelse(i==4,0,ifelse(i==5,0,ifelse(i==6,0,ifelse(i==7,0.66,0.66)))))))  #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1
       dxdf$gidrisk_opt = dxdf$gidrisk_opt + dxdf$gidrisk_rr # absolute risk increase, %
       dxdf$deltagidrisk = dxdf$gidrisk - dxdf$gidrisk_opt 
       
@@ -743,25 +748,25 @@ for (i  in 1:8) {
       
       
       dxdf_tab = dxdf
-      varsToFactor <- c("onsulfa","altmed")
+      varsToFactor <- c("onsulfa","hockd","hohypog","hochf","altmed", "hocvd")
       dxdf_tab[varsToFactor] <- lapply(dxdf_tab[varsToFactor], factor)
 
 
-      vars =c("onsulfa","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt")
-      # tableTwo <- CreateTableOne(vars = vars, data = dxdf_tab, strata="Country")
-      # tab2c = print(tableTwo, nonnormal = c("onsulfa","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
-      # 
-      # dxdf_tabr = dxdf_tab %>%
-      #   group_by(Region)
-      # 
-      # tableTwor <- CreateTableOne(vars = vars, data = dxdf_tabr, strata="Region")
-      # tab2r = print(tableTwor, nonnormal = c("onsulfa","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
+      vars =c("onsulfa","hockd","hohypog","hochf","hocvd","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt")
+      tableTwo <- CreateTableOne(vars = vars, data = dxdf_tab, strata="Country")
+      tab2c = print(tableTwo, nonnormal = c("onsulfa","hockd","hohypog","hochf","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
+
+      dxdf_tabr = dxdf_tab %>%
+        group_by(Region)
+
+      tableTwor <- CreateTableOne(vars = vars, data = dxdf_tabr, strata="Region")
+      tab2r = print(tableTwor, nonnormal = c("onsulfa","hockd","hohypog","hochf","hocvd","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
 
       tableTwoa <- CreateTableOne(vars = vars, data = dxdf_tab)
-      tab2a = print(tableTwoa)#, nonnormal = c("onsulfa","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
+      tab2a = print(tableTwoa, nonnormal = c("onsulfa","hockd","hohypog","hochf","hocvd","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
 
       
-  }
+ # }
   
   
   #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1
@@ -880,10 +885,10 @@ for (i  in 1:8) {
   outmat_ampdalys = bind_rows(outmat_ampdalys,as_tibble(ampdalys_mat))
   outmat_giddalys = bind_rows(outmat_giddalys,as_tibble(giddalys_mat))
   
-}
+#}
 
 #setwd("~/Box/Research/Research projects/WHO diabetes/Results matrices/")
-
+# 
 # save(outmat_rxbpcosts,file=paste0("outmat_rxbpcosts",screens))
 # save(outmat_rxdmcosts,file=paste0("outmat_rxdmcosts",screens))
 # save(outmat_rxstatincosts,file=paste0("outmat_rxstatincosts",screens))
