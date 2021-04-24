@@ -101,10 +101,8 @@ D_amp = mean(c(0.09))
 D_gid = mean(c(0.07))
 b = 0.04
 
-iters = 1
-iter = 1
-
-# for (iter in 1:iters) {
+iters = 10000
+ for (iter in 1:iters) {
   print(paste("On iteration", iter))
   
   
@@ -408,8 +406,7 @@ iter = 1
 
   dxdf$statin = as.numeric(dxdf$statin)-1
   
-  i=7
-#for (i  in 1:8) {
+for (i  in 1:8) {
 
     #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1, all
     
@@ -766,7 +763,7 @@ iter = 1
       tab2a = print(tableTwoa, nonnormal = c("onsulfa","hockd","hohypog","hochf","hocvd","altmed", "hba1c_p","cvdrisk_opt", "chfrisk_opt", "nephrisk_opt", "retinrisk_opt", "neurorisk_opt", "hypogrisk_opt","bmirisk_opt","genitrisk_opt","dkarisk_opt","amprisk_opt","gidrisk_opt"))
 
       
- # }
+}
   
   
   #sulfa, sglt2, glp1, dpp4, tzd, analogue, sglt2+glp1
@@ -885,61 +882,61 @@ iter = 1
   outmat_ampdalys = bind_rows(outmat_ampdalys,as_tibble(ampdalys_mat))
   outmat_giddalys = bind_rows(outmat_giddalys,as_tibble(giddalys_mat))
   
-#}
+}
 
-#setwd("~/Box/Research/Research projects/WHO diabetes/Results matrices/")
-# 
-# save(outmat_rxbpcosts,file=paste0("outmat_rxbpcosts",screens))
-# save(outmat_rxdmcosts,file=paste0("outmat_rxdmcosts",screens))
-# save(outmat_rxstatincosts,file=paste0("outmat_rxstatincosts",screens))
-# 
-# save(outmat_cvdcosts,file=paste0("outmat_cvdcosts",screens))
-# save(outmat_chfcosts,file=paste0("outmat_chfcosts",screens))
-# save(outmat_nephcosts,file=paste0("outmat_nephcosts",screens))
-# save(outmat_retincosts,file=paste0("outmat_retincosts",screens))
-# save(outmat_neurocosts,file=paste0("outmat_neurocosts",screens))
-# save(outmat_hypogcosts,file=paste0("outmat_hypogcosts",screens))
-# save(outmat_bmicosts,file=paste0("outmat_bmicosts",screens))
-# save(outmat_genitcosts,file=paste0("outmat_genitcosts",screens))
-# save(outmat_dkacosts,file=paste0("outmat_dkacosts",screens))
-# save(outmat_ampcosts,file=paste0("outmat_ampcosts",screens))
-# save(outmat_gidcosts,file=paste0("outmat_gidcosts",screens))
-# 
-# save(outmat_cvdevents,file=paste0("outmat_cvdevents",screens))
-# save(outmat_chfevents,file=paste0("outmat_chfevents",screens))
-# save(outmat_nephevents,file=paste0("outmat_nephevents",screens))
-# save(outmat_retinevents,file=paste0("outmat_retinevents",screens))
-# save(outmat_neuroevents,file=paste0("outmat_neuroevents",screens))
-# save(outmat_hypogevents,file=paste0("outmat_hypogevents",screens))
-# save(outmat_bmievents,file=paste0("outmat_bmievents",screens))
-# save(outmat_genitevents,file=paste0("outmat_genitevents",screens))
-# save(outmat_dkaevents,file=paste0("outmat_dkaevents",screens))
-# save(outmat_ampevents,file=paste0("outmat_ampevents",screens))
-# save(outmat_gidevents,file=paste0("outmat_gidevents",screens))
-# 
-# save(outmat_cvddeaths,file=paste0("outmat_cvddeaths",screens))
-# save(outmat_chfdeaths,file=paste0("outmat_chfdeaths",screens))
-# save(outmat_nephdeaths,file=paste0("outmat_nephdeaths",screens))
-# save(outmat_retindeaths,file=paste0("outmat_retindeaths",screens))
-# save(outmat_neurodeaths,file=paste0("outmat_neurodeaths",screens))
-# save(outmat_hypogdeaths,file=paste0("outmat_hypogdeaths",screens))
-# save(outmat_bmideaths,file=paste0("outmat_bmideaths",screens))
-# save(outmat_genitdeaths,file=paste0("outmat_genitdeaths",screens))
-# save(outmat_dkadeaths,file=paste0("outmat_dkadeaths",screens))
-# save(outmat_ampdeaths,file=paste0("outmat_ampdeaths",screens))
-# save(outmat_giddeaths,file=paste0("outmat_giddeaths",screens))
-# 
-# save(outmat_cvddalys,file=paste0("outmat_cvddalys",screens))
-# save(outmat_chfdalys,file=paste0("outmat_chfdalys",screens))
-# save(outmat_nephdalys,file=paste0("outmat_nephdalys",screens))
-# save(outmat_retindalys,file=paste0("outmat_retindalys",screens))
-# save(outmat_neurodalys,file=paste0("outmat_neurodalys",screens))
-# save(outmat_hypogdalys,file=paste0("outmat_hypogdalys",screens))
-# save(outmat_bmidalys,file=paste0("outmat_bmidalys",screens))
-# save(outmat_genitdalys,file=paste0("outmat_genitdalys",screens))
-# save(outmat_dkadalys,file=paste0("outmat_dkadalys",screens))
-# save(outmat_ampdalys,file=paste0("outmat_ampdalys",screens))
-# save(outmat_giddalys,file=paste0("outmat_giddalys",screens))
+setwd("~/Box/Research/Research projects/WHO diabetes/Results matrices/")
+
+save(outmat_rxbpcosts,file=paste0("outmat_rxbpcosts",screens))
+save(outmat_rxdmcosts,file=paste0("outmat_rxdmcosts",screens))
+save(outmat_rxstatincosts,file=paste0("outmat_rxstatincosts",screens))
+
+save(outmat_cvdcosts,file=paste0("outmat_cvdcosts",screens))
+save(outmat_chfcosts,file=paste0("outmat_chfcosts",screens))
+save(outmat_nephcosts,file=paste0("outmat_nephcosts",screens))
+save(outmat_retincosts,file=paste0("outmat_retincosts",screens))
+save(outmat_neurocosts,file=paste0("outmat_neurocosts",screens))
+save(outmat_hypogcosts,file=paste0("outmat_hypogcosts",screens))
+save(outmat_bmicosts,file=paste0("outmat_bmicosts",screens))
+save(outmat_genitcosts,file=paste0("outmat_genitcosts",screens))
+save(outmat_dkacosts,file=paste0("outmat_dkacosts",screens))
+save(outmat_ampcosts,file=paste0("outmat_ampcosts",screens))
+save(outmat_gidcosts,file=paste0("outmat_gidcosts",screens))
+
+save(outmat_cvdevents,file=paste0("outmat_cvdevents",screens))
+save(outmat_chfevents,file=paste0("outmat_chfevents",screens))
+save(outmat_nephevents,file=paste0("outmat_nephevents",screens))
+save(outmat_retinevents,file=paste0("outmat_retinevents",screens))
+save(outmat_neuroevents,file=paste0("outmat_neuroevents",screens))
+save(outmat_hypogevents,file=paste0("outmat_hypogevents",screens))
+save(outmat_bmievents,file=paste0("outmat_bmievents",screens))
+save(outmat_genitevents,file=paste0("outmat_genitevents",screens))
+save(outmat_dkaevents,file=paste0("outmat_dkaevents",screens))
+save(outmat_ampevents,file=paste0("outmat_ampevents",screens))
+save(outmat_gidevents,file=paste0("outmat_gidevents",screens))
+
+save(outmat_cvddeaths,file=paste0("outmat_cvddeaths",screens))
+save(outmat_chfdeaths,file=paste0("outmat_chfdeaths",screens))
+save(outmat_nephdeaths,file=paste0("outmat_nephdeaths",screens))
+save(outmat_retindeaths,file=paste0("outmat_retindeaths",screens))
+save(outmat_neurodeaths,file=paste0("outmat_neurodeaths",screens))
+save(outmat_hypogdeaths,file=paste0("outmat_hypogdeaths",screens))
+save(outmat_bmideaths,file=paste0("outmat_bmideaths",screens))
+save(outmat_genitdeaths,file=paste0("outmat_genitdeaths",screens))
+save(outmat_dkadeaths,file=paste0("outmat_dkadeaths",screens))
+save(outmat_ampdeaths,file=paste0("outmat_ampdeaths",screens))
+save(outmat_giddeaths,file=paste0("outmat_giddeaths",screens))
+
+save(outmat_cvddalys,file=paste0("outmat_cvddalys",screens))
+save(outmat_chfdalys,file=paste0("outmat_chfdalys",screens))
+save(outmat_nephdalys,file=paste0("outmat_nephdalys",screens))
+save(outmat_retindalys,file=paste0("outmat_retindalys",screens))
+save(outmat_neurodalys,file=paste0("outmat_neurodalys",screens))
+save(outmat_hypogdalys,file=paste0("outmat_hypogdalys",screens))
+save(outmat_bmidalys,file=paste0("outmat_bmidalys",screens))
+save(outmat_genitdalys,file=paste0("outmat_genitdalys",screens))
+save(outmat_dkadalys,file=paste0("outmat_dkadalys",screens))
+save(outmat_ampdalys,file=paste0("outmat_ampdalys",screens))
+save(outmat_giddalys,file=paste0("outmat_giddalys",screens))
 
 
 
