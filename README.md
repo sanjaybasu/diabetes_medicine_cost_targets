@@ -8,8 +8,6 @@ Design: Microsimulation model incorporating inputs from cross-sectional surveys 
 
 Setting: Simulated treatment initiation and uptitration of diabetes medications in healthcare settings of low- and middle-income countries.
 
-Participants: N = 20,287 individuals with diabetes mellitus in 50 countries.
-
 Interventions: The model was used to estimate the incremental decrease in disability-adjusted life-years (DALYs) and incremental cost (in 2020 International Dollars) of transitioning away from sulfonylureas as second-line agents and towards each of the alternative oral medication classes (particularly SGLT-2 inhibitors for those with heart failure or chronic kidney disease, or SGLT-2 inhibitors or GLP-1 antagonists for those with atherosclerotic heart disease), as well as enabling choices between human and analogue basal insulin for those with a history of hypoglycemia. DALYs and costs were discounted at a 3% annual rate across a 10-year policy planning horizon.
 
 Main Outcomes and Measures: Incremental reduction in DALYs, incremental increase in healthcare costs including medication costs and costs saved from averted complications, and target medicine price point for cost-effectiveness at a threshold of three times GDP per capita, or cost-neutrality. 
